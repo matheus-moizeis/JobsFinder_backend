@@ -2,6 +2,7 @@
 using JobsFinder.Domain.Repositories.User;
 using JobsFinder.Infrastructure.DataAccess;
 using JobsFinder.Infrastructure.DataAccess.Repositories;
+using JobsFinder.Infrastructure.Extensions;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -11,14 +12,13 @@ public static class DependencyInjectionExtension
 {
     public static void AddInfrastructure(this IServiceCollection services, IConfiguration configuration)
     {
-
         AddDbContext(services, configuration);
         AddRepositories(services);
     }
 
     private static void AddDbContext(IServiceCollection services, IConfiguration configuration)
     {
-        var connectionString = configuration.GetConnectionString("Connection");
+        var connectionString = configuration.ConnectionString();
         services.AddDbContext<JobsFinderDbContext>(dbContextOptions =>
         {
             dbContextOptions.UseSqlServer(connectionString);
