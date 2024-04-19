@@ -14,6 +14,7 @@
     <ProjectReference Include="..\..\Shared\JobsFinder.Communication\JobsFinder.Communication.csproj" />
     <ProjectReference Include="..\..\Shared\JobsFinder.Exceptions\JobsFinder.Exceptions.csproj" />
     <ProjectReference Include="..\JobsFinder.Application\JobsFinder.Application.csproj" />
+    <ProjectReference Include="..\JobsFinder.Infrastructure\JobsFinder.Infrastructure.csproj" />
   </ItemGroup>
 
 </Project>
