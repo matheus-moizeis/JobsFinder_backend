@@ -1,5 +1,5 @@
 ﻿namespace JobsFinder.Exceptions.ExceptionsBase;
 public class JobsFinderException : SystemException
 {
-    public JobsFinderException(string message) : base() { }
+    public JobsFinderException(string message) : base(message) { }
 }
