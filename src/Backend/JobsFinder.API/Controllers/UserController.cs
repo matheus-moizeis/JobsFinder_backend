@@ -4,9 +4,8 @@ using JobsFinder.Communication.Responses;
 using Microsoft.AspNetCore.Mvc;
 
 namespace JobsFinder.API.Controllers;
-[Route("[controller]")]
-[ApiController]
-public class UserController : ControllerBase
+
+public class UserController : JobsFinderController
 {
     [HttpPost]
     [ProducesResponseType(typeof(ResponseRegistredUserJson), StatusCodes.Status201Created)]
