@@ -1,5 +1,6 @@
 ﻿using JobsFinder.Application.Services.AutoMapper;
 using JobsFinder.Application.Services.Cryptography;
+using JobsFinder.Application.UseCases.Login.DoLogin;
 using JobsFinder.Application.UseCases.User.Register;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -17,6 +18,7 @@ public static class DependencyInjectionExtension
     private static void AddUseCases(IServiceCollection services)
     {
         services.AddScoped<IRegisterUserUseCase, RegisterUserUseCase>();
+        services.AddScoped<IDoLoginUseCase, DoLoginUseCase>();
     }
 
     private static void AddAutoMapper(IServiceCollection services)
