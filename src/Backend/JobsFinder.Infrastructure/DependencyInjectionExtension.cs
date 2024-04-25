@@ -1,9 +1,11 @@
 ﻿using FluentMigrator.Runner;
 using JobsFinder.Domain.Repositories;
 using JobsFinder.Domain.Repositories.User;
+using JobsFinder.Domain.Security.Tokens;
 using JobsFinder.Infrastructure.DataAccess;
 using JobsFinder.Infrastructure.DataAccess.Repositories;
 using JobsFinder.Infrastructure.Extensions;
+using JobsFinder.Infrastructure.Security.Tokens.Access.Generator;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -17,6 +19,7 @@ public static class DependencyInjectionExtension
         AddDbContext(services, configuration);
         AddFluentMigrator(services, configuration);
         AddRepositories(services);
+        AddTokens(services, configuration);
     }
 
     private static void AddDbContext(IServiceCollection services, IConfiguration configuration)
@@ -44,5 +47,13 @@ public static class DependencyInjectionExtension
             .WithGlobalConnectionString(connectionString)
             .ScanIn(Assembly.Load("JobsFinder.Infrastructure")).For.All();
         });
+    }
+
+    private static void AddTokens(IServiceCollection services, IConfiguration configuration)
+    {
+        var expirationTimeMinutes = configuration.GetValue<uint>("Settings:Jwt:ExpirationTimeMinutes");
+        var signingKey = configuration.GetValue<string>("Settings:Jwt:SigningKey");
+
+        services.AddScoped<IAccessTokenGenerator>(option => new JwtTokenGenerator(expirationTimeMinutes, signingKey!));
     }
 }

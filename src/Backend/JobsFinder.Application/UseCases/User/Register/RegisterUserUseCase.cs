@@ -4,6 +4,7 @@ using JobsFinder.Communication.Requests;
 using JobsFinder.Communication.Responses;
 using JobsFinder.Domain.Repositories;
 using JobsFinder.Domain.Repositories.User;
+using JobsFinder.Domain.Security.Tokens;
 using JobsFinder.Exceptions;
 using JobsFinder.Exceptions.ExceptionsBase;
 
@@ -13,6 +14,7 @@ public class RegisterUserUseCase : IRegisterUserUseCase
     private readonly IUserReadOnlyRepository _userReadOnlyRepository;
     private readonly IUserWriteOnlyRepository _userWriteOnlyRepository;
     private readonly PasswordEncripter _passwordEncripter;
+    private readonly IAccessTokenGenerator _accessTokenGenerator;
     private readonly IUnitOfWork _unitOfWork;
     private readonly IMapper _mapper;
 
@@ -21,7 +23,8 @@ public class RegisterUserUseCase : IRegisterUserUseCase
         IUserWriteOnlyRepository userWriteOnlyRepository, 
         IMapper mapper, 
         PasswordEncripter passwordEncripter,
-        IUnitOfWork unitOfWork
+        IUnitOfWork unitOfWork,
+        IAccessTokenGenerator accessTokenGenerator
         )
     {
         _userReadOnlyRepository = userReadOnlyRepository;
@@ -29,6 +32,7 @@ public class RegisterUserUseCase : IRegisterUserUseCase
         _mapper = mapper;
         _passwordEncripter = passwordEncripter;
         _unitOfWork = unitOfWork;
+        _accessTokenGenerator = accessTokenGenerator;
     }
 
     public async Task<ResponseRegistredUserJson> Execute(RequestRegisterUserJson request)
@@ -39,6 +43,7 @@ public class RegisterUserUseCase : IRegisterUserUseCase
         var user = _mapper.Map<Domain.Entities.User>(request);
 
         user.Password = _passwordEncripter.Encript(request.Password);
+        user.UserIdentifier = Guid.NewGuid();
 
         await _userWriteOnlyRepository.Add(user);
 
@@ -47,6 +52,10 @@ public class RegisterUserUseCase : IRegisterUserUseCase
         return new ResponseRegistredUserJson
         {
             Name = request.Name,
+            Tokens = new ResponseTokensJson
+            {
+                AccessToken = _accessTokenGenerator.Generate(user.UserIdentifier)
+            }
         };
     }
 
