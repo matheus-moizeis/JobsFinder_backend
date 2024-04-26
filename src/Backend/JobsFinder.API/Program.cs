@@ -1,6 +1,8 @@
 using JobsFinder.API.Converters;
 using JobsFinder.API.Filters;
+using JobsFinder.API.Token;
 using JobsFinder.Application;
+using JobsFinder.Domain.Security.Tokens;
 using JobsFinder.Infrastructure;
 using JobsFinder.Infrastructure.Extensions;
 using JobsFinder.Infrastructure.Migrations;
@@ -50,6 +52,9 @@ builder.Services.AddMvc(options => options.Filters.Add(typeof(ExceptionFilter)))
 
 builder.Services.AddApplication(builder.Configuration);
 builder.Services.AddInfrastructure(builder.Configuration);
+builder.Services.AddScoped<ITokenProvider, HttpContextTokenValue>();
+
+builder.Services.AddHttpContextAccessor();
 
 builder.Services.AddRouting(options => options.LowercaseUrls = true);
 

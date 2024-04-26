@@ -2,11 +2,13 @@
 using JobsFinder.Domain.Repositories;
 using JobsFinder.Domain.Repositories.User;
 using JobsFinder.Domain.Security.Tokens;
+using JobsFinder.Domain.Services.LoggedUser;
 using JobsFinder.Infrastructure.DataAccess;
 using JobsFinder.Infrastructure.DataAccess.Repositories;
 using JobsFinder.Infrastructure.Extensions;
 using JobsFinder.Infrastructure.Security.Tokens.Access.Generator;
 using JobsFinder.Infrastructure.Security.Tokens.Access.Validator;
+using JobsFinder.Infrastructure.Services.LoggedUser;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -21,6 +23,7 @@ public static class DependencyInjectionExtension
         AddFluentMigrator(services, configuration);
         AddRepositories(services);
         AddTokens(services, configuration);
+        AddLoggedUser(services);
     }
 
     private static void AddDbContext(IServiceCollection services, IConfiguration configuration)
@@ -58,4 +61,5 @@ public static class DependencyInjectionExtension
         services.AddScoped<IAccessTokenGenerator>(option => new JwtTokenGenerator(expirationTimeMinutes, signingKey!));
         services.AddScoped<IAccessTokenValidator>(option => new JwtTokenValidator(signingKey!));
     }
+    private static void AddLoggedUser(IServiceCollection service) => service.AddScoped<ILoggedUser, LoggedUser>();
 }
