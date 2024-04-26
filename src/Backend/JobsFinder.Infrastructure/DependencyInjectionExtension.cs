@@ -6,6 +6,7 @@ using JobsFinder.Infrastructure.DataAccess;
 using JobsFinder.Infrastructure.DataAccess.Repositories;
 using JobsFinder.Infrastructure.Extensions;
 using JobsFinder.Infrastructure.Security.Tokens.Access.Generator;
+using JobsFinder.Infrastructure.Security.Tokens.Access.Validator;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -55,5 +56,6 @@ public static class DependencyInjectionExtension
         var signingKey = configuration.GetValue<string>("Settings:Jwt:SigningKey");
 
         services.AddScoped<IAccessTokenGenerator>(option => new JwtTokenGenerator(expirationTimeMinutes, signingKey!));
+        services.AddScoped<IAccessTokenValidator>(option => new JwtTokenValidator(signingKey!));
     }
 }

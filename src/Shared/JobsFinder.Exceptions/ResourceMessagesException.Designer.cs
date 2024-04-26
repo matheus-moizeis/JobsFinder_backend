@@ -106,6 +106,15 @@ namespace JobsFinder.Exceptions {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Favor informar token de autenticação..
+        /// </summary>
+        public static string NO_TOKEN {
+            get {
+                return ResourceManager.GetString("NO_TOKEN", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to A senha deve ter mais de 6 caracteres..
         /// </summary>
         public static string PASSWORD_EMPTY {
@@ -120,6 +129,15 @@ namespace JobsFinder.Exceptions {
         public static string UNKNOWN_ERROR {
             get {
                 return ResourceManager.GetString("UNKNOWN_ERROR", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Usuário não tem permissão para acessar esse recurso.
+        /// </summary>
+        public static string USER_WITHOUT_PERMISSION_ACCESS_RESOURCE {
+            get {
+                return ResourceManager.GetString("USER_WITHOUT_PERMISSION_ACCESS_RESOURCE", resourceCulture);
             }
         }
     }
